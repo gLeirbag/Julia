@@ -1,7 +1,7 @@
 # Declaro o módulo
 module GabrielFibonacci
 # Listá de variáveis públicas
-export fibonacci, fibonaccidynamic, fibonaccirec
+export fibonacci, fibonaccidynamic, fibonaccirec, timerwrapper
 
 function fibonacci(length::Number)::Array{Number}
     sequence = [(1 / sqrt(5)) * (((1 + sqrt(5)) / 2)^n - ((1 - sqrt(5)) / 2)^n)::Number for n ∈ 2:length+1]
@@ -45,6 +45,11 @@ function fibonaccidynamic(length::Number)
 end
 
 end
+
+# using .GabrielFibonacci: timerwrapper, fibonacci
+
+# count = timerwrapper(5*10^9, fibonacci)
+# print(count)
 
 # # Fibs é uma tupla
 # fibs = (fibonacci, fibonaccidynamic, fibonaccirec)
