@@ -1,0 +1,11 @@
+{
+  "cSpell.allowCompoundWords": true,
+  "cSpell.words": [
+    "ftocompare",
+    "iterationxtime",
+    "maxinterationintime",
+    "multithreadmaxinterationintime"
+  ],
+"C_Cpp_Runner.msvcBatchPath": "",
+"julia.environmentPath": "/home/gfgzk/Documents/Dev/Julia/training/plots/makie_tutorial"
+}

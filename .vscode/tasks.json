@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "julia",
+			"command": "",
+			"problemMatcher": [],
+			"label": "Julia: Debug fibonacci plot.jl"
+		},
+		{
+			"type": "shell",
+			"command": "julia ${file}",
+			"label": "Run Julia Project",
+			"problemMatcher": []
+		}
+	]
+}

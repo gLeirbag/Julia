@@ -1,53 +1,32 @@
-include("../functions/time gabriel.jl")
 # Incluo o arquivo(Faço o append nesse)
 include("../functions/fibonacci.jl")
 # chamo o módulo que defini em fibonnaci.jl
-using .GabrielFibonacci: GabrielFibonacci
+include("../functions/compare.jl")
 
+using .GabrielFibonacci: GabrielFibonacci
+using .Compare: Compare
 using Base.Threads: Threads
+using CairoMakie
+
 print("Número de Threads Disponíveis: $(Threads.threadpoolsize())")
 
-using Plots
+# using Plots
 
+labels = ["Fibonacci", "Fibonacci Dynamic Recursive", "Fibonacci Recursive"] 
 fibs = [GabrielFibonacci.fibonacci, GabrielFibonacci.fibonaccidynamic, GabrielFibonacci.fibonaccirec]
-iterations = 30
+seconds = 1
+
+results = Compare.multithreadmaxinterationintime(fibs, seconds)
+counts_iterations = [first(result) for result in results] 
 
 
-# for g in fibs
-#     (g ∘ BigInt)(iterations)  # warm-up (compila antes de medir)
-# end
-# Aquecimento, pois a primeira execução é a mais lerda:
-
-function iterationxtime(ftocompare::Array{Function}, iterations=30)
-    iterations_matrix = zeros(Float64, length(fibs), iterations)
-    for (i, g::Function) in enumerate(ftocompare)
-        for j in 1:iterations
-            my_time = time_ns()
-            sequence::Array{Number} = (g ∘ BigInt)(iterations)
-            my_time = time_ns() - my_time
-            iterations_matrix[i, j] = my_time
-        end
-    end
-    iterations_matrix
-end
-
-function maxinterationintime(ftocompare::Array{Function}, max_seconds=10)
-    tuple_list::Array{Tuple{Number,Number}} = []
-    for g in ftocompare
-        push!(tuple_list, timerwrapper(max_seconds * 10^9, g))
-    end
-    tuple_list
-end
-
-function multithreadmaxinterationintime(ftocompare::Array{Function}, max_seconds=10)
-    # Usando um vetor compartilhado para armazenar os resultados
-    tuple_list::Array{Tuple{Number,Number}} = []
-    fetch.([Threads.@spawn push!(tuple_list, timerwrapper(max_seconds * 10^9, g)) for g in ftocompare])
-    tuple_list
-end
-
-
-
-result = multithreadmaxinterationintime(fibs, 2)
-print(result)
-
+fibonacci_fig =  Figure() 
+axis = Axis(fibonacci_fig[1, 1], ylabel = "Iterations Done", title = "Fibonacci Algorithms Iterations for $seconds seconds", xticks = 1:3)
+boxes = barplot!(axis,[1, 1, 1],  counts_iterations,
+    color = [3, 2, 1],
+    bar_labels = ["$(label)($(count))" for (label, count) in zip(labels, counts_iterations )]
+    ,width = 0.2
+)
+hidespines!(axis)
+hidedecorations!(axis, ticks = false)
+fibonacci_fig

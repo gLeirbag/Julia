@@ -1,5 +1,11 @@
+module GabrielTimer
+"""
+    timerwrapper(time_limit::Int, f::Function)
 
+A function that loops around `f` for next to `time_limit` seconds.
 
+Returns the `(count of loops, total elapsed time)`.
+"""
 function timerwrapper(time_limit::Int, f::Function)
     initial_time = time_ns()
     timer = 0
@@ -10,4 +16,5 @@ function timerwrapper(time_limit::Int, f::Function)
         counter += 1
     end
     (counter, Int(timer))
+end
 end
